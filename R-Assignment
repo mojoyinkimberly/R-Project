@@ -1,0 +1,90 @@
+---
+title: "Implementation of random forest"
+author: "kimberly"
+date: "1/11/2022"
+output: pdf_document
+---
+```{r}
+auto_mobile <- read.csv("~/Documents/r/Automobile_data.csv", sep = ",",header = T)
+auto_mobile
+
+```
+```{r}
+dt <- sample.split(auto_mobile, SplitRatio = 0.75)
+train<- subset(auto_mobile, dt==T)
+test <- subset(auto_mobile, dt==F)
+str(test)
+
+table(train[, c('price', 'make')])
+
+```
+```{r}
+plot(auto_mobile$length)
+plot(auto_mobile$width)
+plot(auto_mobile$symboling)
+plot(auto_mobile$wheel.base)
+plot(auto_mobile$height)
+plot(auto_mobile$engine.size)
+plot(auto_mobile$compression.ratio)
+plot(auto_mobile$city.mpg)
+plot(auto_mobile$highway.mpg)
+plot(auto_mobile$curb.weight)
+```
+
+
+```{r}
+set.seed(50)
+models <- train(fuel.type ~ symboling + wheel.base + length + height + width + curb.weight + engine.size + compression.ratio + city.mpg + highway.mpg , data = train, method = 'rf',
+trControl =trainControl(method ='cv', number = 5))    
+models
+```
+```{r}
+summary(test)
+```
+```{r}
+test$num.of.doors <- ifelse(is.na(test$num.of.doors), mean(test$num.of.doors, na.rm = TRUE), test$num.of.doors)
+test$num.of.doors
+```
+```{r}
+test$s <- predict(models, newdata = test)
+test$s
+```
+```{r}
+train1 <- read.csv("~/Documents/r/train.csv",sep = ",", header = T)
+train1
+```
+```{r}
+dt <- sample.split(train1, SplitRatio = 0.75)
+train <- subset(train1, dt==T)
+test <- subset(train1, dt==F)
+str(test)
+
+table(train[, c('Survived', 'Pclass')])
+
+```
+```{r}
+boxplot(train$Survived, train$Age)
+```
+```{r}
+boxplot(train$Survived, train$Fare)
+```
+```{r}
+train$Survived <- factor(train$Survived)
+set.seed(51)
+model <- train(Survived ~ Pclass + Sex + SibSp + Embarked + Parch + Fare, data = train, method = 'rf',
+trControl = trainControl(method = 'cv', number = 5))
+model
+```
+
+```{r}
+summary(test)
+```
+```{r}
+test$Fare <- ifelse(is.na(test$Fare), mean(test$Fare, na.rm = TRUE), test$Fare)
+summary(test)
+```
+```{r}
+test$Survived <- predict(model, newdata = test)
+test$Survived
+
+```
