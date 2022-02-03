@@ -1,0 +1,61 @@
+---
+title: "database"
+author: "kimberly"
+date: "11/30/2021"
+output: pdf_document
+---
+
+```{r}
+host<-"courses.csrrinzqubik.us-east-1.rds.amazonaws.com"
+connect<-dbConnect(MySQL(),dbname="tweater",
+                   host=host,port=3306,user="student",password="datacamp")  
+```
+```{r}
+tables<-dbListTables(connect)
+tables
+
+```
+```{r}
+users<-dbReadTable(connect,"users")
+users
+```
+```{r}
+comments<-dbReadTable(connect,"comments")
+comments
+write.csv(comments,"comments.csv")
+```
+```{r}
+host<-"car-simulation-station.c9az8e0qjbgo.us-east-1.rds.amazonaws.com"
+connect<-dbConnect(MySQL(),dbname="car_simulation_station",
+                   host=host,port=3306,user="datacamp_user",password="learn tabular data for fun and profit")  
+```
+```{r}
+tables<-dbListTables(connect)
+tables
+```
+```{r}
+adhd_home_cleaned<-dbReadTable(connect,"adhd_home_cleaned")
+adhd_home_cleaned
+write.csv(adhd_home_cleaned,"adhd_home_cleaned.csv")
+```
+```{r}
+lifetime_scq_cleaned<-dbReadTable(connect,"lifetime_scq_cleaned")
+lifetime_scq_cleaned
+write.csv(lifetime_scq_cleaned,"lifetime_scq_cleaned.csv")
+```
+```{r}
+bcancer<-
+  read.csv("https://raw.githubusercontent.com/mGalarnyk/Python_Tutorials/master/Kaggle/BreastCancerWisconsin/data/data.csv", header =TRUE)
+str(bcancer)
+```
+```{r}
+hs<- read.csv("~/Documents/r/house.csv", sep=",")
+boxplot(Price~Status, data= hs, main ="price")
+```
+```{r}
+hs<- read.csv("~/Documents/r/house.csv", sep=",")
+plot(hs$SQFT,hs$Price, xlab="SQFT",ylab="PRICE", main="ScatterPlot of Price and SQFT")
+```
+```{r}
+hist(hs$Price,xlab="Price", main="Histogram of Price")
+```
