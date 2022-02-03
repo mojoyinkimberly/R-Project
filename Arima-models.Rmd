@@ -1,0 +1,77 @@
+---
+title: "classwork on arima models"
+author: "kimberly"
+date: "1/18/2022"
+output: pdf_document
+---
+
+```{r}
+data<- read_csv("~/Documents/r/world-lendinginterestrate.xlsx - Data.csv")
+View(data)
+```
+```{r}
+tsdata <-ts(data[2:51, 2], start = 1976, frequency = 12)
+tsdata
+```
+```{r}
+plot(tsdata)
+```
+```{r}
+sum(is.na(tsdata))
+```
+```{r}
+summary(ur.df(y=tsdata, type= "none", lags=1))
+```
+```{r}
+acf(tsdata, lag.max=34)
+```
+```{r}
+timeseriescomponent <-decompose(tsdata)
+plot(timeseriescomponent)
+```
+```{r}
+adjustedtimeseriesseasonal <- tsdata - timeseriescomponent$seasonal
+plot(adjustedtimeseriesseasonal)
+par(mfrow=c(2,1))
+tsstationary <- diff(adjustedtimeseriesseasonal, differences = 1)
+plot(tsstationary)
+```
+
+```{r}
+pacf(tsdata, lag.max=34)
+```
+```{r}
+urkpssTest(tsdata, type = c("tau"), lags = c("short"),use.lag = NULL, doplot = TRUE)
+stationary_data <- diff(tsdata, differences =1)
+stationary_data2 <- diff(tsdata, differences =2)
+plot(stationary_data)
+plot(stationary_data2)
+```
+
+fiiting a time series model (1,1,1) is p,d,q
+```{r}
+set.seed(51)
+fitARIMA <-arima(tsdata, order=c(1,1,1),seasonal =list(order = c(1,0,1), period = 12), method = "ML")
+fitARIMA                  
+```
+check for the coefficient statistics of the arima model
+```{r}
+coeftest(fitARIMA)
+par(mfrow = c(1,1))
+#checking for autocorrelation between the lagged periods
+acf(fitARIMA$residuals)
+```
+run post tests
+```{r}
+boxresult<- LjungBoxTest(fitARIMA$residuals,k=2,StartLag = 1)
+par(mfrow=c(2,1))
+plot(boxresult[,3], main="Ljung-Box Q Test", ylab = "P-values", xlab ="Lag")
+```
+
+```{r}
+qqnorm(fitARIMA$residuals)
+qqline(fitARIMA$residuals)
+```
+```{r}
+auto.arima(tsdata, trace = TRUE)
+```
