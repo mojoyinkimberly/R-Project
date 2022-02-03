@@ -1,0 +1,26 @@
+---
+title: "Linear Regression"
+author: "kimberly"
+date: "1/12/2022"
+output: pdf_document
+---
+
+```{r}
+iris1<- read.csv("~/Documents/r/iris.data")
+iris1
+```
+```{r}
+m1<-lm(Sepal.Length~Petal.Length, data = iris)
+summary(m1)
+
+```
+```{r}
+house<-read.csv("~/Documents/r/house.csv")
+str(house)
+attach(house)
+```
+
+```{r}
+house1<-lm(Price~Bedrooms+Bathrooms+SQFT+Status)
+summary(house1)
+```
