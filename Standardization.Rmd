@@ -1,0 +1,36 @@
+---
+title: "Standardization"
+author: "kimberly"
+date: "1/12/2022"
+output: pdf_document
+---
+
+```{r}
+data("USArrests")
+head(USArrests)
+
+```
+```{r}
+results <- prcomp(USArrests, scale = TRUE)
+results
+```
+```{r}
+results$rotation <- -1*results$rotation
+results$rotation
+```
+```{r}
+results$x <- -1*results$x
+results$x
+```
+```{r}
+head(results$x)
+```
+```{r}
+biplot(results, scale = 0)
+```
+```{r}
+head(USArrests[order(-USArrests$Murder),])
+```
+```{r}
+results$sdev^2 / sum(results$sdev^2)S
+```
