@@ -1,0 +1,17 @@
+---
+title: "Random Forest Assignment"
+author: "kimberly"
+date: "1/17/2022"
+output: pdf_document
+---
+
+```{r}
+finance <- read_sav("~/Documents/r/EFInA Access to Finance 2008 Survey data.sav")
+finance
+```
+```{r}
+dt <- sample.split(finance, SplitRatio = 0.75)
+train<- subset(finance, dt==T)
+test <- subset(finance, dt==F)
+str(test)
+```
