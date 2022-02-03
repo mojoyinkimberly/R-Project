@@ -1,0 +1,30 @@
+---
+title: "AR models"
+author: "kimberly"
+date: "1/18/2022"
+output: pdf_document
+---
+
+```{r}
+crude_oil<-read.csv("~/Documents/r/crudeoilprices.csv", header = TRUE)
+crude_oil
+```
+```{r}
+crude_oil_ts<- ts(crude_oil[2:35,2], start=c(2011,1), frequency = 12)
+crude_oil_ts
+```
+```{r}
+plot(crude_oil_ts)
+```
+```{r}
+sum(is.na(crude_oil))
+```
+```{r}
+crude_oil_ts_components<-decompose(crude_oil_ts)
+plot(crude_oil_ts_components)
+```
+```{r}
+urkpssTest(crude_oil_ts, type = c("tau"), lags = c("short"),use.lag = NULL, doplot = TRUE)
+stationary_crude_oil <- diff(crude_oil_ts, differences =1)
+plot(stationary_crude_oil)
+```
