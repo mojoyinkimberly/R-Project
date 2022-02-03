@@ -1,0 +1,18 @@
+---
+title: "t-SNE"
+author: "kimberly"
+date: "1/12/2022"
+output: html_document
+---
+
+```{r}
+train2 <- read.csv("~/Documents/r/train.csv")
+train2
+```
+```{r}
+Labels<-train2$label
+Labels
+```
+```{r}
+train$label<-as.factor(train2$label)
+```
